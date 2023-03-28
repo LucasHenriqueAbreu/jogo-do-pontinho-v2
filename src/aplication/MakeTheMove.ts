@@ -1,4 +1,4 @@
-import GameRepository from "../domain/repository/GameRepository";
+import GameRepository from "../domain/game/repository/GameRepository";
 
 type Input = {
   originPosition: Position;

@@ -1,6 +1,6 @@
-import Board from "../../../src/domain/entities/Board";
-import Game from "../../../src/domain/entities/Game";
-import Player from "../../../src/domain/entities/Player";
+import Board from "../../../src/domain/game/entities/Board";
+import Game from "../../../src/domain/game/entities/Game";
+import Player from "../../../src/domain/game/entities/Player";
 
 
 describe('Game', () => {

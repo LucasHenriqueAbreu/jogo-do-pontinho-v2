@@ -1,4 +1,4 @@
-import Player from "../../../src/domain/entities/Player";
+import Player from "../../../src/domain/game/entities/Player";
 
 describe('Player', () => { 
   it('Must create a Player with success', () => {
