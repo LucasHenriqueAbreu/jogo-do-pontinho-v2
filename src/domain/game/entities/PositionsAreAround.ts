@@ -12,10 +12,10 @@ type Input = {
 class PositionsAreAround {
   public static execute(input: Input): boolean {
     const result = GetAroundPositions.execute({ position: input.originPosition, board: input.board });
-    return result.bottom !== null && PositionAreEquals.execute({ positionOne: input.destinyPosition, positionTwo: result.bottom! })
-      || result.top !== null && PositionAreEquals.execute({ positionOne: input.destinyPosition, positionTwo: result.top! })
-      || result.next !== null && PositionAreEquals.execute({ positionOne: input.destinyPosition, positionTwo: result.next! })
-      || result.previous !== null && PositionAreEquals.execute({ positionOne: input.destinyPosition, positionTwo: result.previous! })
+    return result.bottom !== undefined && PositionAreEquals.execute({ positionOne: input.destinyPosition, positionTwo: result.bottom })
+      || result.top !== undefined && PositionAreEquals.execute({ positionOne: input.destinyPosition, positionTwo: result.top })
+      || result.next !== undefined && PositionAreEquals.execute({ positionOne: input.destinyPosition, positionTwo: result.next })
+      || result.previous !== undefined && PositionAreEquals.execute({ positionOne: input.destinyPosition, positionTwo: result.previous })
   }
 }
 

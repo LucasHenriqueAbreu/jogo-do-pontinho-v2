@@ -65,6 +65,14 @@ describe('PositionsAreAround: Must be possible know if some position is around o
     const board = new Board(10, 10);
     const result = PositionsAreAround.execute({ originPosition, destinyPosition, board });
     expect(result).toBeTruthy();
-  })
+  });
+
+  it('Case 9: Positionis not around', () => {
+    const originPosition = new Position(0, 2);
+    const destinyPosition = new Position(2, 2);
+    const board = new Board(10, 10);
+    const result = PositionsAreAround.execute({ originPosition, destinyPosition, board });
+    expect(result).toBeFalsy();
+  });
 
 });

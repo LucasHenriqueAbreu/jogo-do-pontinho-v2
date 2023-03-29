@@ -17,24 +17,6 @@ class Board {
     this._buildBoardValue();
   }
 
-  executeMove(originPosition: Position, destinyPosition: Position, ownerId: number) {
-    if (PositionAreEquals.execute({ positionOne: originPosition, positionTwo: destinyPosition })) {
-      throw new Error(`Origin and destiny position cant't be equal`);
-    }
-
-    if (PositionAreOutOfTheBoard.execute({ position: destinyPosition, board: this }) ||
-      PositionAreOutOfTheBoard.execute({ position: originPosition, board: this })) {
-      throw new Error('Points must be inside of the board');
-    }
-
-    if (PositionsAreAround.execute({ originPosition, destinyPosition, board: this })) {
-      throw new Error('Point must be around');
-    }
-
-    this._getPoint(originPosition).addMark(new Mark(ownerId, MarkType.ORIGIN));
-    this._getPoint(destinyPosition).addMark(new Mark(ownerId, MarkType.DESTINY));
-  }
-
   private _getPoint(position: Position): Point {
     const exception = new Error('Invalid position');
     const column = this._value[position.columnIndex];
