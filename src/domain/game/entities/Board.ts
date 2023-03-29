@@ -1,4 +1,4 @@
-import GetAroundPostions from "./GetAroundPostions";
+import GetAroundPositions from "./GetAroundPositions";
 import Mark, { MarkType } from "./Mark";
 import Point from "./Point";
 import Position from "./Position";
@@ -53,7 +53,7 @@ class Board {
 
   // TODO: that method must be a DomainService
   private _positionsAreAround(originPosition: Position, destinyPosition: Position): boolean {
-    const result = GetAroundPostions.execute({ position: originPosition, board: this });
+    const result = GetAroundPositions.execute({ position: originPosition, board: this });
 
     // return PositionAreEquals.execute(destinyPosition, result.top) ||
     //   PositionAreEquals.execute(destinyPosition, result.bottom) ||
