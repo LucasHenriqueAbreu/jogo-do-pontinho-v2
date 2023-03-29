@@ -1,3 +1,4 @@
+import GetAroundPostions from "./GetAroundPostions";
 import Mark, { MarkType } from "./Mark";
 import Point from "./Point";
 import Position from "./Position";
@@ -15,14 +16,14 @@ class Board {
   }
 
   executeMove(originPosition: Position, destinyPosition: Position, ownerId: number) {
-    if (PositionAreEquals.execute(originPosition, destinyPosition)) {
+    if (PositionAreEquals.execute({ positionOne: originPosition, positionTwo: destinyPosition })) {
       throw new Error(`Origin and destiny position cant't be equal`);
     }
 
     if (this._positionsAreAround(originPosition, destinyPosition)) {
       throw new Error('Point must be around');
     }
-    
+
     this._getPoint(originPosition).addMark(new Mark(ownerId, MarkType.ORIGIN));
     this._getPoint(destinyPosition).addMark(new Mark(ownerId, MarkType.DESTINY));
   }
@@ -52,14 +53,13 @@ class Board {
 
   // TODO: that method must be a DomainService
   private _positionsAreAround(originPosition: Position, destinyPosition: Position): boolean {
-    const originTop = new Position(originPosition.rowIndex - 1, originPosition.columnIndex);
-    const originBottom = new Position(originPosition.rowIndex + 1, originPosition.columnIndex);
-    const originPrevious = new Position(originPosition.rowIndex, originPosition.columnIndex - 1);
-    const originNext = new Position(originPosition.rowIndex, originPosition.columnIndex - 1);
-    return PositionAreEquals.execute(destinyPosition, originTop) ||
-      PositionAreEquals.execute(destinyPosition, originBottom) ||
-      PositionAreEquals.execute(destinyPosition, originPrevious) ||
-      PositionAreEquals.execute(destinyPosition, originNext);
+    const result = GetAroundPostions.execute({ position: originPosition, board: this });
+
+    // return PositionAreEquals.execute(destinyPosition, result.top) ||
+    //   PositionAreEquals.execute(destinyPosition, result.bottom) ||
+    //   PositionAreEquals.execute(destinyPosition, result.previous) ||
+    //   PositionAreEquals.execute(destinyPosition, result.next);
+    return false
   }
 
   get value(): Point[][] {

@@ -1,8 +1,14 @@
 import Position from "./Position";
 
+type Input = {
+  positionOne: Position,
+  positionTwo: Position
+}
+
 class PositionAreEquals {
-  public static execute(positionOne: Position, positionTwo: Position) {
-    return positionOne.columnIndex === positionTwo.columnIndex && positionOne.rowIndex === positionTwo.rowIndex;
+  public static execute(input: Input) {
+    return input.positionOne.columnIndex === input.positionTwo.columnIndex &&
+      input.positionOne.rowIndex === input.positionTwo.rowIndex;
   }
 }
 
