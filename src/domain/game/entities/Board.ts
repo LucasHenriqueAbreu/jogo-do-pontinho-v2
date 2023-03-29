@@ -3,6 +3,8 @@ import Mark, { MarkType } from "./Mark";
 import Point from "./Point";
 import Position from "./Position";
 import PositionAreEquals from "./PositionAreEquals";
+import PositionAreOutOfTheBoard from "./PositionAreOutOfTheBoard";
+import PositionsAreAround from "./PositionsAreAround";
 
 class Board {
   private _columnSize: number;
@@ -20,7 +22,12 @@ class Board {
       throw new Error(`Origin and destiny position cant't be equal`);
     }
 
-    if (this._positionsAreAround(originPosition, destinyPosition)) {
+    if (PositionAreOutOfTheBoard.execute({ position: destinyPosition, board: this }) ||
+      PositionAreOutOfTheBoard.execute({ position: originPosition, board: this })) {
+      throw new Error('Points must be inside of the board');
+    }
+
+    if (PositionsAreAround.execute({ originPosition, destinyPosition, board: this })) {
       throw new Error('Point must be around');
     }
 
@@ -49,17 +56,6 @@ class Board {
       }
       this._value.push(rowValue);
     }
-  }
-
-  // TODO: that method must be a DomainService
-  private _positionsAreAround(originPosition: Position, destinyPosition: Position): boolean {
-    const result = GetAroundPositions.execute({ position: originPosition, board: this });
-
-    // return PositionAreEquals.execute(destinyPosition, result.top) ||
-    //   PositionAreEquals.execute(destinyPosition, result.bottom) ||
-    //   PositionAreEquals.execute(destinyPosition, result.previous) ||
-    //   PositionAreEquals.execute(destinyPosition, result.next);
-    return false
   }
 
   get value(): Point[][] {
