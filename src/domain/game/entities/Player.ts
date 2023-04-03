@@ -8,6 +8,10 @@ class Player {
     this._name = name;
     this._color = color;
   }
+
+  get id(): number | undefined {
+    return this._id;
+  }
 }
 
 export default Player;

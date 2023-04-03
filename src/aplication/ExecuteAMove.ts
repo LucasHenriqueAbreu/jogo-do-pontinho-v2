@@ -21,7 +21,6 @@ class ExecuteAmove {
   public async execute(input: Input): Promise<void> {
     const game = await this._gameRepository.findById(input.gameId);
     if (!game) {
-      // TODO: must be testing;
       throw new Error('Game not found');
     }
     const originPosition = new Position(input.originPosition.columnIndex, input.originPosition.rowIndex);
@@ -40,7 +39,7 @@ class ExecuteAmove {
       throw new Error('Point must be around');
     }
     // TODO: maybe need validate user
-    game.board.setPoints(originPosition, input.ownerId, destinyPosition);
+    game.createAmove(originPosition, input.ownerId, destinyPosition);
   }
 }
 

@@ -1,5 +1,6 @@
 import Board from "./Board";
 import Player from "./Player";
+import Position from "./Position";
 
 class Game {
   private _id?: number;
@@ -28,6 +29,14 @@ class Game {
 
   private _getRandomPlayer(): Player {
     return this._players[Math.floor(Math.random() * this._players.length)];
+  }
+
+  public createAmove(originPosition: Position, ownerId: number, destinyPosition: Position): void {
+    const player = this._players.find((player) => player.id === ownerId);
+    if(!player) {
+      throw new Error('Player not found');
+    }
+    this._board.setPoints(originPosition, ownerId, destinyPosition);
   }
 
 }

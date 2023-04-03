@@ -30,37 +30,144 @@ describe('Execute a move', () => {
 
   });
 
-  // describe('Must cause an exception if any position is not valid', () => {
-  //   it('Case 1', () => {
-  //     const board = new Board(4, 4);
-  //     expect(() => board.executeMove(new Position(10, 10), new Position(0, 1), 1)).toThrow('Points must be inside of the board');
-  //   });
+  it('Must cause an exception if there is no game', async () => {
+    await expect(usecase.execute({
+      originPosition: { columnIndex: 0, rowIndex: 0 },
+      destinyPosition: { columnIndex: 0, rowIndex: 1 },
+      gameId: 1,
+      ownerId: 1,
+    })).rejects.toEqual(Error('Game not found'));
+  });
 
-  //   it('Case 2', () => {
-  //     const board = new Board(4, 4);
-  //     expect(() => board.executeMove(new Position(0, 10), new Position(0, 1), 1)).toThrow('Points must be inside of the board');
-  //   });
+  it('Must cause an exception if there is no player', async () => {
+    const players = [
+      new Player('Lucas Teste 1', '#333', 1),
+      new Player('Lucas Teste 2', '#fffff', 2),
+    ]
+    const board = new Board(4, 4);
+    const game = new Game(board, players, 1);
+    await gameRepository.save(game);
+    await expect(usecase.execute({
+      originPosition: { columnIndex: 0, rowIndex: 0 },
+      destinyPosition: { columnIndex: 0, rowIndex: 1 },
+      gameId: 1,
+      ownerId: 4,
+    })).rejects.toEqual(Error('Player not found'));
+  });
 
-  //   it('Case 3', () => {
-  //     const board = new Board(4, 4);
-  //     expect(() => board.executeMove(new Position(0, 0), new Position(4, 4), 1)).toThrow('Points must be inside of the board');
-  //   });
+  describe('Must cause an exception if any position is not valid', () => {
+    it('Case 1', async () => {
+      const players = [
+        new Player('Lucas Teste 1', '#333', 1),
+        new Player('Lucas Teste 2', '#fffff', 2),
+      ]
+      const board = new Board(4, 4);
+      const game = new Game(board, players, 1);
+      await gameRepository.save(game);
+      await expect(usecase.execute({
+        originPosition: { columnIndex: 10, rowIndex: 10 },
+        destinyPosition: { columnIndex: 0, rowIndex: 1 },
+        gameId: 1,
+        ownerId: 1,
+      })).rejects.toEqual(Error('Points must be inside of the board'));
+    });
 
-  //   it('Case 4', () => {
-  //     const board = new Board(4, 4);
-  //     expect(() => board.executeMove(new Position(0, 0), new Position(4, 0), 1)).toThrow('Points must be inside of the board');
-  //   });
-  // });
+    it('Case 2', async () => {
+      const players = [
+        new Player('Lucas Teste 1', '#333', 1),
+        new Player('Lucas Teste 2', '#fffff', 2),
+      ]
+      const board = new Board(4, 4);
+      const game = new Game(board, players, 1);
+      await gameRepository.save(game);
+      await expect(usecase.execute({
+        originPosition: { columnIndex: 0, rowIndex: 10 },
+        destinyPosition: { columnIndex: 0, rowIndex: 1 },
+        gameId: 1,
+        ownerId: 1,
+      })).rejects.toEqual(Error('Points must be inside of the board'));
+    });
 
-  // describe('Must cause an exception if the destiny point is not around', () => {
-  //   const board = new Board(10, 10);
+    it('Case 3', async () => {
+      const players = [
+        new Player('Lucas Teste 1', '#333', 1),
+        new Player('Lucas Teste 2', '#fffff', 2),
+      ]
+      const board = new Board(4, 4);
+      const game = new Game(board, players, 1);
+      await gameRepository.save(game);
+      await expect(usecase.execute({
+        originPosition: { columnIndex: 0, rowIndex: 10 },
+        destinyPosition: { columnIndex: 0, rowIndex: 1 },
+        gameId: 1,
+        ownerId: 1,
+      })).rejects.toEqual(Error('Points must be inside of the board'));
+    });
 
-  //   it('Case 1: trying connect equal position (0, 0 with 0, 0)', () => {
-  //     expect(() => board.executeMove(new Position(0, 0), new Position(0, 0), 1)).toThrow(`Origin and destiny position cant't be equal`);
-  //   });
+    it('Case 4', async () => {
+      const players = [
+        new Player('Lucas Teste 1', '#333', 1),
+        new Player('Lucas Teste 2', '#fffff', 2),
+      ]
+      const board = new Board(4, 4);
+      const game = new Game(board, players, 1);
+      await gameRepository.save(game);
+      await expect(usecase.execute({
+        originPosition: { columnIndex: 0, rowIndex: 0 },
+        destinyPosition: { columnIndex: 4, rowIndex: 4 },
+        gameId: 1,
+        ownerId: 1,
+      })).rejects.toEqual(Error('Points must be inside of the board'));
+    });
 
-  //   it('Case 2: trying connect position 0, 2 with 2, 2', () => {
-  //     expect(() => board.executeMove(new Position(0, 2), new Position(2, 2), 1)).toThrow('Point must be around');
-  //   });
-  // });
+    it('Case 5', async () => {
+      const players = [
+        new Player('Lucas Teste 1', '#333', 1),
+        new Player('Lucas Teste 2', '#fffff', 2),
+      ]
+      const board = new Board(4, 4);
+      const game = new Game(board, players, 1);
+      await gameRepository.save(game);
+      await expect(usecase.execute({
+        originPosition: { columnIndex: 0, rowIndex: 0 },
+        destinyPosition: { columnIndex: 4, rowIndex: 0 },
+        gameId: 1,
+        ownerId: 1,
+      })).rejects.toEqual(Error('Points must be inside of the board'));
+    });
+  });
+
+  describe('Must cause an exception if the destiny point is not around', () => {
+    it('Case 1: trying connect equal position (0, 0 with 0, 0)', async () => {
+      const players = [
+        new Player('Lucas Teste 1', '#333', 1),
+        new Player('Lucas Teste 2', '#fffff', 2),
+      ]
+      const board = new Board(4, 4);
+      const game = new Game(board, players, 1);
+      await gameRepository.save(game);
+      await expect(usecase.execute({
+        originPosition: { columnIndex: 0, rowIndex: 0 },
+        destinyPosition: { columnIndex: 0, rowIndex: 0 },
+        gameId: 1,
+        ownerId: 1,
+      })).rejects.toEqual(Error(`Origin and destiny position cant't be equal`));
+    });
+
+    it('Case 2: trying connect position 0, 2 with 2, 2', async () => {
+      const players = [
+        new Player('Lucas Teste 1', '#333', 1),
+        new Player('Lucas Teste 2', '#fffff', 2),
+      ]
+      const board = new Board(4, 4);
+      const game = new Game(board, players, 1);
+      await gameRepository.save(game);
+      await expect(usecase.execute({
+        originPosition: { columnIndex: 0, rowIndex: 2 },
+        destinyPosition: { columnIndex: 2, rowIndex: 2 },
+        gameId: 1,
+        ownerId: 1,
+      })).rejects.toEqual(Error(`Point must be around`));
+    });
+  });
 });
