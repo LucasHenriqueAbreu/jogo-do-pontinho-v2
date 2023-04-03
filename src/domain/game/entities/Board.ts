@@ -3,14 +3,20 @@ import Point from "./Point";
 import Position from "./Position";
 
 class Board {
+  private _id?: number;
   private _columnSize: number;
   private _rowColumn: number;
   private _value: Point[][] = [];
 
-  constructor(columnSize: number, rowColumn: number) {
+  constructor(columnSize: number, rowColumn: number, id?: number) {
     this._columnSize = columnSize;
     this._rowColumn = rowColumn;
+    this._id = id;
     this._buildBoardValue();
+  }
+
+  get id(): number | undefined {
+    return this._id;
   }
 
   private _getPoint(position: Position): Point {

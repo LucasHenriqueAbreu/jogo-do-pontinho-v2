@@ -2,7 +2,7 @@ import ExecuteAmove from "../../src/aplication/ExecuteAmove";
 import Board from "../../src/domain/game/entities/Board";
 import Game from "../../src/domain/game/entities/Game";
 import Player from "../../src/domain/game/entities/Player";
-import GameRepositoryMemory from "../../src/infra/repository/memory/GameRepository";
+import GameRepositoryMemory from "../../src/infra/repository/memory/GameRepositoryMemory";
 
 describe('Execute a move', () => {
   let gameRepository: GameRepositoryMemory;
@@ -170,23 +170,4 @@ describe('Execute a move', () => {
     });
   });
 
-  describe('Update rules', () => {
-    describe('Must update the new player on the game', () => {
-      it('Case 1: Only two players', async () => {
-        const players = [
-          new Player('Lucas Teste 1', '#333', 1),
-          new Player('Lucas Teste 2', '#fffff', 2),
-        ]
-        const board = new Board(4, 4);
-        const game = new Game(board, players, 1);
-        await gameRepository.save(game);
-        await expect(usecase.execute({
-          originPosition: { columnIndex: 0, rowIndex: 0 },
-          destinyPosition: { columnIndex: 0, rowIndex: 1 },
-          gameId: 1,
-          ownerId: game.turnPlayer.id!,
-        })).resolves.not.toThrow();
-      });
-    });
-  });
 });

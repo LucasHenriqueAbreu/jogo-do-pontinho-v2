@@ -2,6 +2,7 @@ import Position from "../domain/game/entities/Position";
 import PositionAreEquals from "../domain/game/entities/PositionAreEquals";
 import PositionAreOutOfTheBoard from "../domain/game/entities/PositionAreOutOfTheBoard";
 import PositionsAreAround from "../domain/game/entities/PositionsAreAround";
+import BoardRepository from "../domain/game/repository/BoardRepository";
 import GameRepository from "../domain/game/repository/GameRepository";
 
 type Input = {
@@ -13,9 +14,11 @@ type Input = {
 
 class ExecuteAmove {
   private _gameRepository: GameRepository;
+  private _boardRepository: BoardRepository;
 
-  constructor(gameRepository: GameRepository) {
+  constructor(gameRepository: GameRepository, boardRepository: BoardRepository) {
     this._gameRepository = gameRepository;
+    this._boardRepository = boardRepository;
   }
 
   public async execute(input: Input): Promise<void> {
@@ -38,8 +41,11 @@ class ExecuteAmove {
     if (!PositionsAreAround.execute({originPosition, destinyPosition, board: game.board})) {
       throw new Error('Point must be around');
     }
-    // TODO: maybe need validate user
     game.createAmove(originPosition, input.ownerId, destinyPosition);
+    // TODO: remove !
+    await this._gameRepository.update(game.id!, game);
+    await this._boardRepository.update(game.board.id!, game.board);
+    //atualizar game/tabuleiro
   }
 }
 
