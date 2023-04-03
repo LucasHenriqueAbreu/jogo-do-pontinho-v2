@@ -1,10 +1,6 @@
-import GetAroundPositions from "./GetAroundPositions";
 import Mark, { MarkType } from "./Mark";
 import Point from "./Point";
 import Position from "./Position";
-import PositionAreEquals from "./PositionAreEquals";
-import PositionAreOutOfTheBoard from "./PositionAreOutOfTheBoard";
-import PositionsAreAround from "./PositionsAreAround";
 
 class Board {
   private _columnSize: number;
@@ -42,6 +38,11 @@ class Board {
 
   get value(): Point[][] {
     return this._value;
+  }
+
+  public setPoints(originPosition: Position, ownerId: number, destinyPosition: Position): void {
+    this._getPoint(originPosition).addMark(new Mark(ownerId, MarkType.ORIGIN));
+    this._getPoint(destinyPosition).addMark(new Mark(ownerId, MarkType.DESTINY));
   }
 
 }

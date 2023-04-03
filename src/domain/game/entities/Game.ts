@@ -14,13 +14,22 @@ class Game {
     this._turnPlayer = this._getRandomPlayer();
   }
 
+  get id(): number | undefined {
+    return this._id;
+  }
+
   get turnPlayer(): Player {
     return this._turnPlayer;
+  }
+
+  get board(): Board {
+    return this._board;
   }
 
   private _getRandomPlayer(): Player {
     return this._players[Math.floor(Math.random() * this._players.length)];
   }
+
 }
 
 export default Game;
