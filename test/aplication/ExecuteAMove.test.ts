@@ -25,9 +25,8 @@ describe('Execute a move', () => {
       originPosition: { columnIndex: 0, rowIndex: 0 },
       destinyPosition: { columnIndex: 0, rowIndex: 1 },
       gameId: 1,
-      ownerId: 1,
+      ownerId: game.turnPlayer.id!,
     })).resolves.not.toThrow();
-
   });
 
   it('Must cause an exception if there is no game', async () => {
@@ -68,7 +67,7 @@ describe('Execute a move', () => {
         originPosition: { columnIndex: 10, rowIndex: 10 },
         destinyPosition: { columnIndex: 0, rowIndex: 1 },
         gameId: 1,
-        ownerId: 1,
+        ownerId: game.turnPlayer.id!,
       })).rejects.toEqual(Error('Points must be inside of the board'));
     });
 
@@ -84,7 +83,7 @@ describe('Execute a move', () => {
         originPosition: { columnIndex: 0, rowIndex: 10 },
         destinyPosition: { columnIndex: 0, rowIndex: 1 },
         gameId: 1,
-        ownerId: 1,
+        ownerId: game.turnPlayer.id!,
       })).rejects.toEqual(Error('Points must be inside of the board'));
     });
 
@@ -100,7 +99,7 @@ describe('Execute a move', () => {
         originPosition: { columnIndex: 0, rowIndex: 10 },
         destinyPosition: { columnIndex: 0, rowIndex: 1 },
         gameId: 1,
-        ownerId: 1,
+        ownerId: game.turnPlayer.id!,
       })).rejects.toEqual(Error('Points must be inside of the board'));
     });
 
@@ -116,7 +115,7 @@ describe('Execute a move', () => {
         originPosition: { columnIndex: 0, rowIndex: 0 },
         destinyPosition: { columnIndex: 4, rowIndex: 4 },
         gameId: 1,
-        ownerId: 1,
+        ownerId: game.turnPlayer.id!,
       })).rejects.toEqual(Error('Points must be inside of the board'));
     });
 
@@ -132,7 +131,7 @@ describe('Execute a move', () => {
         originPosition: { columnIndex: 0, rowIndex: 0 },
         destinyPosition: { columnIndex: 4, rowIndex: 0 },
         gameId: 1,
-        ownerId: 1,
+        ownerId: game.turnPlayer.id!,
       })).rejects.toEqual(Error('Points must be inside of the board'));
     });
   });
@@ -150,7 +149,7 @@ describe('Execute a move', () => {
         originPosition: { columnIndex: 0, rowIndex: 0 },
         destinyPosition: { columnIndex: 0, rowIndex: 0 },
         gameId: 1,
-        ownerId: 1,
+        ownerId: game.turnPlayer.id!,
       })).rejects.toEqual(Error(`Origin and destiny position cant't be equal`));
     });
 
@@ -166,8 +165,28 @@ describe('Execute a move', () => {
         originPosition: { columnIndex: 0, rowIndex: 2 },
         destinyPosition: { columnIndex: 2, rowIndex: 2 },
         gameId: 1,
-        ownerId: 1,
+        ownerId: game.turnPlayer.id!,
       })).rejects.toEqual(Error(`Point must be around`));
+    });
+  });
+
+  describe('Update rules', () => {
+    describe('Must update the new player on the game', () => {
+      it('Case 1: Only two players', async () => {
+        const players = [
+          new Player('Lucas Teste 1', '#333', 1),
+          new Player('Lucas Teste 2', '#fffff', 2),
+        ]
+        const board = new Board(4, 4);
+        const game = new Game(board, players, 1);
+        await gameRepository.save(game);
+        await expect(usecase.execute({
+          originPosition: { columnIndex: 0, rowIndex: 0 },
+          destinyPosition: { columnIndex: 0, rowIndex: 1 },
+          gameId: 1,
+          ownerId: game.turnPlayer.id!,
+        })).resolves.not.toThrow();
+      });
     });
   });
 });

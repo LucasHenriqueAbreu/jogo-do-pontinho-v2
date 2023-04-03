@@ -33,10 +33,26 @@ class Game {
 
   public createAmove(originPosition: Position, ownerId: number, destinyPosition: Position): void {
     const player = this._players.find((player) => player.id === ownerId);
-    if(!player) {
+    if (!player) {
       throw new Error('Player not found');
     }
+    if(player.id !== this.turnPlayer.id) {
+      throw new Error('Is not your turn');
+    }
     this._board.setPoints(originPosition, ownerId, destinyPosition);
+    this._changeTurnPlayer();
+  }
+
+  private _changeTurnPlayer(): void {
+    this._turnPlayer = this._getNextPlayer();
+  }
+
+  private _getNextPlayer(): Player {
+    const index = this._players.indexOf(this._turnPlayer);
+    if (index >= 0 && index < this._players.length - 1) {
+      return this._players[index + 1];
+    }
+    return this._players[0];
   }
 
 }
