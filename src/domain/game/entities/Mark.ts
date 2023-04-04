@@ -15,6 +15,10 @@ class Mark {
   get ownerId(): number {
     return this._ownerId;
   }
+
+  get type(): MarkType {
+    return this._type;
+  }
 }
 
 export default Mark;

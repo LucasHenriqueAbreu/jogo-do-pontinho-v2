@@ -8,11 +8,11 @@ class Game {
   private _board: Board;
   private _turnPlayer: Player;
 
-  constructor(board: Board, players: Player[], id?: number) {
+  constructor(board: Board, players: Player[], id?: number, turnPlayer?: Player) {
     this._id = id;
     this._players = players;
     this._board = board;
-    this._turnPlayer = this._getRandomPlayer();
+    this._turnPlayer = turnPlayer || this._getRandomPlayer();
   }
 
   get id(): number | undefined {

@@ -1,33 +1,83 @@
 import ExecuteAmove from "../../src/aplication/ExecuteAmove";
 import Board from "../../src/domain/game/entities/Board";
 import Game from "../../src/domain/game/entities/Game";
+import Mark, { MarkType } from "../../src/domain/game/entities/Mark";
 import Player from "../../src/domain/game/entities/Player";
-import GameRepositoryMemory from "../../src/infra/repository/memory/GameRepositoryMemory";
+import Point from "../../src/domain/game/entities/Point";
+import BoardRepository from "../../src/domain/game/repository/BoardRepository";
+import GameRepository from "../../src/domain/game/repository/GameRepository";
+import { BoardRepositoryMemory } from "../../src/infra/repository/memory/BoardRepositoryMemory";
+import { GameRepositoryMemory } from "../../src/infra/repository/memory/GameRepositoryMemory";
 
 describe('Execute a move', () => {
-  let gameRepository: GameRepositoryMemory;
+  let gameRepository: GameRepository;
+  let boardRepository: BoardRepository;
   let usecase: ExecuteAmove;
 
   beforeEach(() => {
     gameRepository = new GameRepositoryMemory();
-    usecase = new ExecuteAmove(gameRepository);
-  })
-
-  it('Must be possible for a player to execute a move', async () => {
-    const players = [
-      new Player('Lucas Teste 1', '#333', 1),
-      new Player('Lucas Teste 2', '#fffff', 2),
-    ]
-    const board = new Board(4, 4);
-    const game = new Game(board, players, 1);
-    await gameRepository.save(game);
-    await expect(usecase.execute({
-      originPosition: { columnIndex: 0, rowIndex: 0 },
-      destinyPosition: { columnIndex: 0, rowIndex: 1 },
-      gameId: 1,
-      ownerId: game.turnPlayer.id!,
-    })).resolves.not.toThrow();
+    boardRepository = new BoardRepositoryMemory();
+    usecase = new ExecuteAmove(gameRepository, boardRepository);
   });
+
+  describe('Must be possible for a player to execute a move', () => {
+    it('Case 1: execution without error', async () => {
+      const players = [
+        new Player('Lucas Teste 1', '#333', 1),
+        new Player('Lucas Teste 2', '#fffff', 2),
+      ]
+      const board = new Board(4, 4);
+      const game = new Game(board, players, 1);
+      await gameRepository.save(game);
+      await boardRepository.save(board);
+      await expect(usecase.execute({
+        originPosition: { columnIndex: 0, rowIndex: 0 },
+        destinyPosition: { columnIndex: 0, rowIndex: 1 },
+        gameId: 1,
+        ownerId: game.turnPlayer.id!,
+      })).resolves.not.toThrow();
+    });
+
+    it('Case 2: execution and update values in "database"', async () => {
+      const players = [
+        new Player('Lucas Teste 1', '#333', 1),
+        new Player('Lucas Teste 2', '#fffff', 2),
+      ]
+      const board = new Board(4, 4);
+      const game = new Game(board, players, 1);
+      await gameRepository.save(game);
+      await boardRepository.save(board);
+
+      const playerTurn = game.turnPlayer.id!;
+      await usecase.execute({
+        originPosition: { columnIndex: 0, rowIndex: 0 },
+        destinyPosition: { columnIndex: 0, rowIndex: 1 },
+        gameId: 1,
+        ownerId: playerTurn,
+      });
+      const gameUpdated = await gameRepository.findById(game.id!);
+      expect(gameUpdated).toBeInstanceOf(Game);
+      expect(gameUpdated?.turnPlayer).toEqual(game.turnPlayer);
+
+      const boardUpdated = await boardRepository.findById(board.id!);
+      expect(boardUpdated).toBeInstanceOf(Board);
+      const originPoint = boardUpdated?.value[0][0];
+      const destinyPoint = boardUpdated?.value[0][1];
+      expect(originPoint).toBeInstanceOf(Point);
+      expect(destinyPoint).toBeInstanceOf(Point);
+      
+      const originMark = originPoint?.marks.peek()!;
+      const destinyMark = destinyPoint?.marks.peek()!;
+      expect(originMark).toBeInstanceOf(Mark);
+      expect(originMark.ownerId).toEqual(playerTurn);
+      expect(originMark.type).toEqual(MarkType.ORIGIN);
+
+      expect(destinyMark).toBeInstanceOf(Mark);
+      expect(destinyMark.ownerId).toEqual(playerTurn);
+      expect(destinyMark.type).toEqual(MarkType.DESTINY);
+    });
+  });
+
 
   it('Must cause an exception if there is no game', async () => {
     await expect(usecase.execute({
@@ -169,5 +219,4 @@ describe('Execute a move', () => {
       })).rejects.toEqual(Error(`Point must be around`));
     });
   });
-
 });
