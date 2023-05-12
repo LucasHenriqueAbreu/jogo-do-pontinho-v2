@@ -12,6 +12,7 @@ type Input = {
   ownerId: number;
 }
 
+// TODO: We don't need two repositories, just one repository for an aggregate 
 class ExecuteAmove {
   private _gameRepository: GameRepository;
   private _boardRepository: BoardRepository;
@@ -42,7 +43,7 @@ class ExecuteAmove {
       throw new Error('Point must be around');
     }
     game.createAmove(originPosition, input.ownerId, destinyPosition);
-    // TODO: remove !
+    // TODO: change turn player is her, i don't know!
     await this._gameRepository.update(game.id!, game);
     await this._boardRepository.update(game.board.id!, game.board);
     //atualizar game/tabuleiro

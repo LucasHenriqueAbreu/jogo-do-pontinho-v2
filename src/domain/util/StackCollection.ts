@@ -2,6 +2,8 @@
  * Copy by this papper https://dev.to/glebirovich/typescript-data-structures-stack-and-queue-hld
  */
 
+import Mark from "../game/entities/Mark";
+
 interface IStack<T> {
   push(item: T): void;
   pop(): T | undefined;
@@ -44,6 +46,10 @@ class StackCollection<T> extends Collection<T> implements IStack<T> {
 
   public getSomeItem(index: number): T | undefined {
     return this.storage[index];
+  }
+
+  public find<TProp extends keyof T>(key: TProp, value: T[TProp]): T | undefined{
+    return this.storage.find((item: T) => item[key] === value);
   }
 }
 

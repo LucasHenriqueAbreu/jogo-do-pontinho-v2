@@ -2,6 +2,7 @@ import Mark, { MarkType } from "./Mark";
 import Point from "./Point";
 import Position from "./Position";
 
+// TODO: make id not null;
 class Board {
   private _id?: number;
   private _columnSize: number;
@@ -19,7 +20,8 @@ class Board {
     return this._id;
   }
 
-  private _getPoint(position: Position): Point {
+  public getPoint(position: Position): Point {
+    // TODO: create expecifi exceptions
     const exception = new Error('Invalid position');
     const column = this._value[position.columnIndex];
     if (!column) {
@@ -47,8 +49,8 @@ class Board {
   }
 
   public setPoints(originPosition: Position, ownerId: number, destinyPosition: Position): void {
-    this._getPoint(originPosition).addMark(new Mark(ownerId, MarkType.ORIGIN));
-    this._getPoint(destinyPosition).addMark(new Mark(ownerId, MarkType.DESTINY));
+    this.getPoint(originPosition).addMark(new Mark(ownerId, MarkType.ORIGIN));
+    this.getPoint(destinyPosition).addMark(new Mark(ownerId, MarkType.DESTINY));
   }
 
 }

@@ -7,7 +7,7 @@ class Mark {
   private _ownerId: number;
   private _type: MarkType;
 
-  constructor(ownerId: number, type: MarkType) {
+  constructor(ownerId: number, type: MarkType, closeScare: boolean = false) {
     this._ownerId = ownerId;
     this._type = type;
   }
