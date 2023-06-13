@@ -2,21 +2,20 @@ import Mark, { MarkType } from "./Mark";
 import Point from "./Point";
 import Position from "./Position";
 
-// TODO: make id not null;
 class Board {
-  private _id?: number;
+  private _id: number;
   private _columnSize: number;
   private _rowColumn: number;
   private _value: Point[][] = [];
 
-  constructor(columnSize: number, rowColumn: number, id?: number) {
+  constructor(id: number, columnSize: number, rowColumn: number) {
+    this._id = id;
     this._columnSize = columnSize;
     this._rowColumn = rowColumn;
-    this._id = id;
     this._buildBoardValue();
   }
 
-  get id(): number | undefined {
+  get id(): number {
     return this._id;
   }
 

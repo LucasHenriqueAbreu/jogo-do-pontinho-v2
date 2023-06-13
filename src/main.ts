@@ -7,7 +7,7 @@ import { GameRepositoryMemory } from "./infra/repository/memory/GameRepositoryMe
 
 const player1 = new Player('Teste 1', '#333', 1);
 const player2 = new Player('Teste 2', '#333', 2);
-const board = new Board(4, 4, 1);
+const board = new Board(1, 4, 4, 1);
 const game = new Game(board, [player1, player2], 1);
 
 const boardRepository = new BoardRepositoryMemory();

@@ -19,10 +19,10 @@ describe('HasNewScore', () => {
 
   it('Shold be possible get to square', async () => {
     const players = [
-      new Player('Lucas Teste 1', '#333', 1),
-      new Player('Lucas Teste 2', '#fffff', 2),
+      new Player(1, 'Lucas Teste 1', '#333'),
+      new Player(2, 'Lucas Teste 2', '#fffff'),
     ]
-    const board = new Board(4, 4);
+    const board = new Board(1, 4, 4);
     const game = new Game(board, players, 1);
     await gameRepository.save(game);
     await boardRepository.save(board);
@@ -51,7 +51,7 @@ describe('HasNewScore', () => {
       new Position(0, 0),
     );
 
-    const result = GetNewScores.execute({ destinyPosition: new Position(0, 1), originPosition: new Position(0, 0), board: game.board, ownerId: game.turnPlayer });
+    const result = GetNewScores.execute({ destinyPosition: new Position(0, 1), originPosition: new Position(0, 0), board: game.board, ownerId: game.turnPlayer.id });
     expect(result).toBeTruthy();
   })
 });

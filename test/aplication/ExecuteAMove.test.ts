@@ -9,6 +9,7 @@ import GameRepository from "../../src/domain/game/repository/GameRepository";
 import { BoardRepositoryMemory } from "../../src/infra/repository/memory/BoardRepositoryMemory";
 import { GameRepositoryMemory } from "../../src/infra/repository/memory/GameRepositoryMemory";
 
+// TODO: data tests must be mock.
 describe('Execute a move', () => {
   let gameRepository: GameRepository;
   let boardRepository: BoardRepository;
@@ -23,10 +24,10 @@ describe('Execute a move', () => {
   describe('Must be possible for a player to execute a move', () => {
     it('Case 1: execution without error', async () => {
       const players = [
-        new Player('Lucas Teste 1', '#333', 1),
-        new Player('Lucas Teste 2', '#fffff', 2),
+        new Player(1, 'Lucas Teste 1', '#333'),
+        new Player(2, 'Lucas Teste 2', '#fffff'),
       ]
-      const board = new Board(4, 4);
+      const board = new Board(1, 4, 4);
       const game = new Game(board, players, 1);
       await gameRepository.save(game);
       await boardRepository.save(board);
@@ -40,10 +41,10 @@ describe('Execute a move', () => {
 
     it('Case 2: execution and update values in "database"', async () => {
       const players = [
-        new Player('Lucas Teste 1', '#333', 1),
-        new Player('Lucas Teste 2', '#fffff', 2),
+        new Player(1, 'Lucas Teste 1', '#333'),
+        new Player(2, 'Lucas Teste 2', '#fffff'),
       ]
-      const board = new Board(4, 4);
+      const board = new Board(1, 4, 4);
       const game = new Game(board, players, 1);
       await gameRepository.save(game);
       await boardRepository.save(board);
@@ -65,7 +66,7 @@ describe('Execute a move', () => {
       const destinyPoint = boardUpdated?.value[0][1];
       expect(originPoint).toBeInstanceOf(Point);
       expect(destinyPoint).toBeInstanceOf(Point);
-      
+
       const originMark = originPoint?.marks.peek()!;
       const destinyMark = destinyPoint?.marks.peek()!;
       expect(originMark).toBeInstanceOf(Mark);
@@ -90,10 +91,10 @@ describe('Execute a move', () => {
 
   it('Must cause an exception if there is no player', async () => {
     const players = [
-      new Player('Lucas Teste 1', '#333', 1),
-      new Player('Lucas Teste 2', '#fffff', 2),
+      new Player(1, 'Lucas Teste 1', '#333'),
+      new Player(2, 'Lucas Teste 2', '#fffff'),
     ]
-    const board = new Board(4, 4);
+    const board = new Board(1, 4, 4);
     const game = new Game(board, players, 1);
     await gameRepository.save(game);
     await expect(usecase.execute({
@@ -107,10 +108,10 @@ describe('Execute a move', () => {
   describe('Must cause an exception if any position is not valid', () => {
     it('Case 1', async () => {
       const players = [
-        new Player('Lucas Teste 1', '#333', 1),
-        new Player('Lucas Teste 2', '#fffff', 2),
+        new Player(1, 'Lucas Teste 1', '#333'),
+        new Player(2, 'Lucas Teste 2', '#fffff'),
       ]
-      const board = new Board(4, 4);
+      const board = new Board(1, 4, 4);
       const game = new Game(board, players, 1);
       await gameRepository.save(game);
       await expect(usecase.execute({
@@ -123,10 +124,10 @@ describe('Execute a move', () => {
 
     it('Case 2', async () => {
       const players = [
-        new Player('Lucas Teste 1', '#333', 1),
-        new Player('Lucas Teste 2', '#fffff', 2),
+        new Player(1, 'Lucas Teste 1', '#333'),
+        new Player(2, 'Lucas Teste 2', '#fffff'),
       ]
-      const board = new Board(4, 4);
+      const board = new Board(1, 4, 4);
       const game = new Game(board, players, 1);
       await gameRepository.save(game);
       await expect(usecase.execute({
@@ -139,10 +140,10 @@ describe('Execute a move', () => {
 
     it('Case 3', async () => {
       const players = [
-        new Player('Lucas Teste 1', '#333', 1),
-        new Player('Lucas Teste 2', '#fffff', 2),
+        new Player(1, 'Lucas Teste 1', '#333'),
+        new Player(2, 'Lucas Teste 2', '#fffff'),
       ]
-      const board = new Board(4, 4);
+      const board = new Board(1, 4, 4);
       const game = new Game(board, players, 1);
       await gameRepository.save(game);
       await expect(usecase.execute({
@@ -155,10 +156,10 @@ describe('Execute a move', () => {
 
     it('Case 4', async () => {
       const players = [
-        new Player('Lucas Teste 1', '#333', 1),
-        new Player('Lucas Teste 2', '#fffff', 2),
+        new Player(1, 'Lucas Teste 1', '#333'),
+        new Player(2, 'Lucas Teste 2', '#fffff'),
       ]
-      const board = new Board(4, 4);
+      const board = new Board(1, 4, 4);
       const game = new Game(board, players, 1);
       await gameRepository.save(game);
       await expect(usecase.execute({
@@ -171,10 +172,10 @@ describe('Execute a move', () => {
 
     it('Case 5', async () => {
       const players = [
-        new Player('Lucas Teste 1', '#333', 1),
-        new Player('Lucas Teste 2', '#fffff', 2),
+        new Player(1, 'Lucas Teste 1', '#333'),
+        new Player(2, 'Lucas Teste 2', '#fffff'),
       ]
-      const board = new Board(4, 4);
+      const board = new Board(1, 4, 4);
       const game = new Game(board, players, 1);
       await gameRepository.save(game);
       await expect(usecase.execute({
@@ -189,10 +190,10 @@ describe('Execute a move', () => {
   describe('Must cause an exception if the destiny point is not around', () => {
     it('Case 1: trying connect equal position (0, 0 with 0, 0)', async () => {
       const players = [
-        new Player('Lucas Teste 1', '#333', 1),
-        new Player('Lucas Teste 2', '#fffff', 2),
+        new Player(1, 'Lucas Teste 1', '#333'),
+        new Player(2, 'Lucas Teste 2', '#fffff'),
       ]
-      const board = new Board(4, 4);
+      const board = new Board(1, 4, 4);
       const game = new Game(board, players, 1);
       await gameRepository.save(game);
       await expect(usecase.execute({
@@ -205,10 +206,10 @@ describe('Execute a move', () => {
 
     it('Case 2: trying connect position 0, 2 with 2, 2', async () => {
       const players = [
-        new Player('Lucas Teste 1', '#333', 1),
-        new Player('Lucas Teste 2', '#fffff', 2),
+        new Player(1, 'Lucas Teste 1', '#333'),
+        new Player(2, 'Lucas Teste 2', '#fffff'),
       ]
-      const board = new Board(4, 4);
+      const board = new Board(1, 4, 4);
       const game = new Game(board, players, 1);
       await gameRepository.save(game);
       await expect(usecase.execute({
