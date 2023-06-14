@@ -1,5 +1,9 @@
 import Board from "./Board";
 import GetAroundPositions from "./GetAroundPositions";
+import DistinyMark from "./Mark/DistinyMark";
+import Mark from "./Mark/Mark";
+import OriginMark from "./Mark/OriginMark";
+import Point from "./Point";
 import Position from "./Position";
 import Score from "./Score";
 
@@ -10,47 +14,93 @@ export type HasNewScoreInput = {
   ownerId: number
 }
 
+// TODO: change de name, maybe this just verify a new score of a new move.
 class GetNewScores {
   static execute(params: HasNewScoreInput): Score[] {
+    const { destinyPosition, originPosition, board, ownerId } = params;
+    board.toString();
     const scores: Score[] = [];
-    const originAroundPositions = GetAroundPositions.execute({ board: params.board, position: params.originPosition });
-    const distinyAroundPositions = GetAroundPositions.execute({ board: params.board, position: params.destinyPosition });
+    const originAroundPositions = GetAroundPositions.execute({ board: board, position: originPosition });
+    const distinyAroundPositions = GetAroundPositions.execute({ board: board, position: destinyPosition });
 
-    // Verify if is on horizontal, 
-    const isHorizontal = GetNewScores.isOnHorizontal(params.originPosition, params.destinyPosition);
+    // Verify if is on horizontal
+    // TODO: refatorar
+    const isHorizontal = GetNewScores.isOnHorizontal(originPosition, destinyPosition);
     if (isHorizontal) {
-      const hasTopDash = GetNewScores.hasAdash(params.board, params.ownerId, originAroundPositions.top, distinyAroundPositions.top,);
-      const hasBottonDash = GetNewScores.hasAdash(params.board, params.ownerId, originAroundPositions.bottom, distinyAroundPositions.bottom);
+      const hasTopDash = GetNewScores.hasAdash(board, ownerId, originAroundPositions.top, distinyAroundPositions.top);
+      const hasBottonDash = GetNewScores.hasAdash(board, ownerId, originAroundPositions.bottom, distinyAroundPositions.bottom);
       if (hasTopDash) {
-        scores.push(
-          new Score(
-            [
-              params.originPosition,
-              params.destinyPosition,
-              originAroundPositions.top!,
-              distinyAroundPositions.top!
-            ], params.ownerId,
-          )
-        );
+        const hasOriginSideDash = GetNewScores.hasAdash(board, ownerId, originAroundPositions.top, originPosition);
+        const hasDistinySideDash = GetNewScores.hasAdash(board, ownerId, distinyAroundPositions.top, destinyPosition);
+        if (hasOriginSideDash && hasDistinySideDash) {
+          scores.push(
+            new Score(
+              [
+                originPosition,
+                destinyPosition,
+                originAroundPositions.top!,
+                distinyAroundPositions.top!
+              ], ownerId,
+            )
+          );
+        }
 
       }
 
       if (hasBottonDash) {
-        scores.push(
-          new Score(
-            [
-              params.originPosition,
-              params.destinyPosition,
-              originAroundPositions.bottom!,
-              distinyAroundPositions.bottom!
-            ], params.ownerId,
-          )
-        );
-
+        const hasOriginSideDash = GetNewScores.hasAdash(board, ownerId, originAroundPositions.bottom, originPosition);
+        const hasDistinySideDash = GetNewScores.hasAdash(board, ownerId, distinyAroundPositions.bottom, destinyPosition);
+        if (hasOriginSideDash && hasDistinySideDash) {
+          scores.push(
+            new Score(
+              [
+                originPosition,
+                destinyPosition,
+                originAroundPositions.bottom!,
+                distinyAroundPositions.bottom!
+              ], ownerId,
+            )
+          );
+        }
       }
     }
     if (!isHorizontal) {
-      // Verify se combine both previous position has a move. Same to next
+      const hasRightDash = GetNewScores.hasAdash(board, ownerId, originAroundPositions.next, distinyAroundPositions.next);
+      const hasLeftDash = GetNewScores.hasAdash(board, ownerId, originAroundPositions.previous, distinyAroundPositions.previous);
+      if (hasRightDash) {
+        const hasOriginSideDash = GetNewScores.hasAdash(board, ownerId, originAroundPositions.next, originPosition);
+        const hasDistinySideDash = GetNewScores.hasAdash(board, ownerId, distinyAroundPositions.next, destinyPosition);
+        if (hasOriginSideDash && hasDistinySideDash) {
+          scores.push(
+            new Score(
+              [
+                originPosition,
+                destinyPosition,
+                originAroundPositions.next!,
+                distinyAroundPositions.next!
+              ], ownerId,
+            )
+          );
+        }
+
+      }
+
+      if (hasLeftDash) {
+        const hasOriginSideDash = GetNewScores.hasAdash(board, ownerId, originAroundPositions.previous, originPosition);
+        const hasDistinySideDash = GetNewScores.hasAdash(board, ownerId, distinyAroundPositions.previous, destinyPosition);
+        if (hasOriginSideDash && hasDistinySideDash) {
+          scores.push(
+            new Score(
+              [
+                originPosition,
+                destinyPosition,
+                originAroundPositions.previous!,
+                distinyAroundPositions.previous!
+              ], ownerId,
+            )
+          );
+        }
+      }
     }
     return scores;
   }
@@ -59,15 +109,23 @@ class GetNewScores {
     return originPosition.rowIndex === destinyPosition.rowIndex;
   }
 
-  private static hasAdash(board: Board, ownerId: number, positionOne?: Position, positionTwo?: Position): boolean {
-    if (!positionOne || !positionTwo) {
+  private static hasAdash(board: Board, ownerId: number, positionOrigin?: Position, positionDistiny?: Position): boolean {
+    if (!positionOrigin || !positionDistiny) {
       return false;
     }
-    const pointOne = board.getPoint(positionOne);
-    const pointTwo = board.getPoint(positionTwo);
-    const markOne = pointOne.marks.find('ownerId', ownerId);
-    const markTwo = pointTwo.marks.find('ownerId', ownerId);
-    return !!markOne && !!markTwo;
+    const pointFromOriginPosition = board.getPoint(positionOrigin);
+    const pointFromDistinyPosition = board.getPoint(positionDistiny);
+    const hasAdashInPointOneMarks = GetNewScores.hasAdashInPointByTargetPosition(pointFromOriginPosition, positionDistiny);
+    const hasAdashInPointTwoMarks = GetNewScores.hasAdashInPointByTargetPosition(pointFromDistinyPosition, positionOrigin);
+
+    return hasAdashInPointOneMarks || hasAdashInPointTwoMarks;
+  }
+
+  static hasAdashInPointByTargetPosition(point: Point, targetPosition: Position): boolean {
+    return point.marks.list.some((mark: Mark) =>
+      mark instanceof OriginMark && mark.isMyDistiny(targetPosition) ||
+      mark instanceof DistinyMark && mark.isMyOrigin(targetPosition)
+    );
   }
 
 }

@@ -1,7 +1,7 @@
 import ExecuteAmove from "../../src/aplication/ExecuteAmove";
 import Board from "../../src/domain/game/entities/Board";
 import Game from "../../src/domain/game/entities/Game";
-import Mark, { MarkType } from "../../src/domain/game/entities/Mark";
+import Mark, { MarkType } from "../../src/domain/game/entities/Mark/Mark";
 import Player from "../../src/domain/game/entities/Player";
 import Point from "../../src/domain/game/entities/Point";
 import BoardRepository from "../../src/domain/game/repository/BoardRepository";

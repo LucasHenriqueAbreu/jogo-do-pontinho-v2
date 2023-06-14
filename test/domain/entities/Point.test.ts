@@ -1,4 +1,4 @@
-import Mark, { MarkType } from "../../../src/domain/game/entities/Mark";
+import Mark, { MarkType } from "../../../src/domain/game/entities/Mark/Mark";
 import Point from "../../../src/domain/game/entities/Point";
 
 

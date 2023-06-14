@@ -1,4 +1,6 @@
-import Mark, { MarkType } from "./Mark";
+import DistinyMark from "./Mark/DistinyMark";
+import Mark from "./Mark/Mark";
+import OriginMark from "./Mark/OriginMark";
 import Point from "./Point";
 import Position from "./Position";
 
@@ -48,8 +50,26 @@ class Board {
   }
 
   public setPoints(originPosition: Position, ownerId: number, destinyPosition: Position): void {
-    this.getPoint(originPosition).addMark(new Mark(ownerId, MarkType.ORIGIN));
-    this.getPoint(destinyPosition).addMark(new Mark(ownerId, MarkType.DESTINY));
+    this.getPoint(originPosition).addMark(new OriginMark(ownerId, destinyPosition));
+    this.getPoint(destinyPosition).addMark(new DistinyMark(ownerId, originPosition));
+  }
+
+  public toString(): void {
+    const rows = this._value.length;
+    const columns = this._value[0].length;
+
+    for (let i = 0; i < rows; i++) {
+      let row = "";
+      for (let j = 0; j < columns; j++) {
+        const point = this._value[i][j];
+        row += `Mark ${i} ${j}`.repeat(point.marks.length);
+        row += " | ";
+      }
+      console.log(row);
+      if (i < rows - 1) {
+        console.log("-".repeat(row.length));
+      }
+    }
   }
 
 }

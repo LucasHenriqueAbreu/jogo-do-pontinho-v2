@@ -2,7 +2,7 @@
  * Copy by this papper https://dev.to/glebirovich/typescript-data-structures-stack-and-queue-hld
  */
 
-import Mark from "../game/entities/Mark";
+import Mark from "../game/entities/Mark/Mark";
 
 interface IStack<T> {
   push(item: T): void;
@@ -20,6 +20,7 @@ abstract class Collection<T> {
   abstract isFull(): boolean;
 }
 
+// TODO: refactory to methods get;
 class StackCollection<T> extends Collection<T> implements IStack<T> {
   constructor(private capacity: number = Infinity) {
     super();
@@ -32,25 +33,31 @@ class StackCollection<T> extends Collection<T> implements IStack<T> {
     this.storage.push(item);
   }
 
-  pop(): T | undefined {
+  public pop(): T | undefined {
     return this.storage.pop();
   }
 
-  peek(): T | undefined {
+  public peek(): T | undefined {
     return this.storage[this.size() - 1];
   }
 
-  isFull(): boolean {
+  public isFull(): boolean {
     return this.capacity === this.size();
+  }
+
+  public get length(): number {
+    return this.storage.length;
+  }
+
+  // TODO: think in a better way, this way violate a POO principle
+  public get list(): T[] {
+    return this.storage;
   }
 
   public getSomeItem(index: number): T | undefined {
     return this.storage[index];
   }
 
-  public find<TProp extends keyof T>(key: TProp, value: T[TProp]): T | undefined{
-    return this.storage.find((item: T) => item[key] === value);
-  }
 }
 
 

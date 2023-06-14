@@ -41,28 +41,28 @@ describe('Game', () => {
       new Player(1, 'Player1', '#fffff'),
       new Player(2, 'Player2', '#333'),
       new Player(3, 'Player3', '#333'),
-      new Player(4, 'Player4', '#333'), 
+      new Player(4, 'Player4', '#333'),
       new Player(5, 'Player5', '#333'),
     ];
     const moves = [
       {
-        originPosition: new Position(0, 0), 
+        originPosition: new Position(0, 0),
         destinyPosition: new Position(0, 1)
       },
       {
-        originPosition: new Position(1, 0), 
+        originPosition: new Position(1, 0),
         destinyPosition: new Position(1, 1)
       },
       {
-        originPosition: new Position(2, 0), 
+        originPosition: new Position(2, 0),
         destinyPosition: new Position(2, 1)
       },
       {
-        originPosition: new Position(3, 0), 
+        originPosition: new Position(3, 0),
         destinyPosition: new Position(3, 1)
       },
       {
-        originPosition: new Position(4, 0), 
+        originPosition: new Position(4, 0),
         destinyPosition: new Position(4, 1)
       }
     ]

@@ -5,9 +5,9 @@ import Player from "./domain/game/entities/Player";
 import { BoardRepositoryMemory } from "./infra/repository/memory/BoardRepositoryMemory";
 import { GameRepositoryMemory } from "./infra/repository/memory/GameRepositoryMemory";
 
-const player1 = new Player('Teste 1', '#333', 1);
-const player2 = new Player('Teste 2', '#333', 2);
-const board = new Board(1, 4, 4, 1);
+const player1 = new Player(1, 'Teste 1', '#333');
+const player2 = new Player(2, 'Teste 2', '#333');
+const board = new Board(1, 4, 4);
 const game = new Game(board, [player1, player2], 1);
 
 const boardRepository = new BoardRepositoryMemory();

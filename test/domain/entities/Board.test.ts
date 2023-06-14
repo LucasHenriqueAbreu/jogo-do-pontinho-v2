@@ -1,5 +1,5 @@
 import Board from "../../../src/domain/game/entities/Board";
-import Mark from "../../../src/domain/game/entities/Mark";
+import Mark from "../../../src/domain/game/entities/Mark/Mark";
 import Position from "../../../src/domain/game/entities/Position";
 
 describe('Board', () => {

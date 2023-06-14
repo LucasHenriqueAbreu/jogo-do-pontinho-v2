@@ -10,11 +10,15 @@ class Position {
   get columnIndex(): number {
     return this._columnIndex;
   }
-  
+
   get rowIndex(): number {
     return this._rowIndex;
   }
-  
+
+  public equal(position: Position): boolean {
+    return position.columnIndex === this._columnIndex &&
+      position.rowIndex === this._rowIndex;
+  }
 }
 
 export default Position;
