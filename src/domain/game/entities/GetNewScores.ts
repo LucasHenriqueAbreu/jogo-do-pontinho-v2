@@ -1,6 +1,6 @@
 import Board from "./Board";
 import GetAroundPositions from "./GetAroundPositions";
-import DistinyMark from "./Mark/DistinyMark";
+import DistinyMark from "./DistinyMark";
 import Mark from "./Mark/Mark";
 import OriginMark from "./Mark/OriginMark";
 import Point from "./Point";

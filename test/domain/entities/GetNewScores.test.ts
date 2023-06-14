@@ -89,11 +89,16 @@ describe('HasNewScore', () => {
         new Position(1, 1),
       );
 
-      const result = GetNewScores.execute({ destinyPosition: new Position(1, 1), originPosition: new Position(0, 1), board: game.board, ownerId: game.turnPlayer.id });
+      const result = GetNewScores.execute({
+        originPosition: new Position(0, 1),
+        destinyPosition: new Position(1, 1),
+        board: game.board,
+        ownerId: game.turnPlayer.id,
+      });
       expect(result.length).toEqual(1);
     });
 
-    it('Deve ser retornar dois ponto quando o quadrado foi fechado no meio, ou seja parte superior e inferior possuem traços', async () => {
+    it('Deve ser retornar dois ponto quando o quadrado foi fechado no meio, ou seja, parte superior e inferior possuem traços', async () => {
       game.createAmove(
         new Position(1, 1),
         game.turnPlayer.id,
@@ -192,80 +197,90 @@ describe('HasNewScore', () => {
       expect(result.length).toEqual(1);
     });
 
-    // it('Deve ser retornar um ponto quando o quadrado foi fechado na parte inferior', async () => {  
-    //   game.createAmove(
-    //     new Position(1, 1),
-    //     game.turnPlayer.id,
-    //     new Position(1, 0),
-    //   );
+    it('Deve ser retornar um ponto quando o quadrado foi fechado na esquerda', async () => {
+      game.createAmove(
+        new Position(1, 0),
+        game.turnPlayer.id,
+        new Position(2, 0),
+      );
 
-    //   game.createAmove(
-    //     new Position(1, 0),
-    //     game.turnPlayer.id,
-    //     new Position(0, 0),
-    //   );
+      game.createAmove(
+        new Position(2, 0),
+        game.turnPlayer.id,
+        new Position(2, 1),
+      );
 
-    //   game.createAmove(
-    //     new Position(0, 0),
-    //     game.turnPlayer.id,
-    //     new Position(0, 1),
-    //   );
+      game.createAmove(
+        new Position(2, 1),
+        game.turnPlayer.id,
+        new Position(1, 1),
+      );
 
-    //   game.createAmove(
-    //     new Position(0, 1),
-    //     game.turnPlayer.id,
-    //     new Position(1, 1),
-    //   );
+      game.createAmove(
+        new Position(1, 1),
+        game.turnPlayer.id,
+        new Position(1, 0),
+      );
 
-    //   const result = GetNewScores.execute({ destinyPosition: new Position(1, 1), originPosition: new Position(0, 1), board: game.board, ownerId: game.turnPlayer.id });
-    //   expect(result.length).toEqual(1);
-    // });
+      const result = GetNewScores.execute({
+        originPosition: new Position(1, 1),
+        destinyPosition: new Position(1, 0),
+        board: game.board,
+        ownerId: game.turnPlayer.id,
+      });
+      expect(result.length).toEqual(1);
+    });
 
-    // it('Deve ser retornar dois ponto quando o quadrado foi fechado no meio, ou seja parte superior e inferior possuem traços', async () => {  
-    //   game.createAmove(
-    //     new Position(1, 1),
-    //     game.turnPlayer.id,
-    //     new Position(1, 0),
-    //   );
+    it('Deve ser retornar dois ponto quando o quadrado foi fechado no meio, ou seja, esquerda e direita possuem traços', async () => {
+      game.createAmove(
+        new Position(1, 0),
+        game.turnPlayer.id,
+        new Position(0, 0),
+      );
 
-    //   game.createAmove(
-    //     new Position(1, 0),
-    //     game.turnPlayer.id,
-    //     new Position(0, 0),
-    //   );
+      game.createAmove(
+        new Position(0, 0),
+        game.turnPlayer.id,
+        new Position(0, 1),
+      );
 
-    //   game.createAmove(
-    //     new Position(0, 0),
-    //     game.turnPlayer.id,
-    //     new Position(0, 1),
-    //   );
+      game.createAmove(
+        new Position(0, 1),
+        game.turnPlayer.id,
+        new Position(1, 1),
+      );
 
-    //   game.createAmove(
-    //     new Position(0, 1),
-    //     game.turnPlayer.id,
-    //     new Position(0, 2),
-    //   );
+      game.createAmove(
+        new Position(1, 0),
+        game.turnPlayer.id,
+        new Position(2, 0),
+      );
 
-    //   game.createAmove(
-    //     new Position(0, 2),
-    //     game.turnPlayer.id,
-    //     new Position(1, 2),
-    //   );
+      game.createAmove(
+        new Position(2, 0),
+        game.turnPlayer.id,
+        new Position(2, 1),
+      );
 
-    //   game.createAmove(
-    //     new Position(1, 2),
-    //     game.turnPlayer.id,
-    //     new Position(1, 1),
-    //   );
+      game.createAmove(
+        new Position(2, 1),
+        game.turnPlayer.id,
+        new Position(1, 1),
+      );
 
-    //   game.createAmove(
-    //     new Position(0, 1),
-    //     game.turnPlayer.id,
-    //     new Position(1, 1),
-    //   );
+      game.createAmove(
+        new Position(1, 1),
+        game.turnPlayer.id,
+        new Position(1, 0),
+      );
 
-    //   const result = GetNewScores.execute({ destinyPosition: new Position(1, 1), originPosition: new Position(0, 1), board: game.board, ownerId: game.turnPlayer.id });
-    //   expect(result.length).toEqual(2);
-    // });
+      const result = GetNewScores.execute({
+        destinyPosition: new Position(1, 1),
+        originPosition: new Position(1, 0),
+        board: game.board,
+        ownerId: game.turnPlayer.id,
+      });
+      expect(result.length).toEqual(2);
+    });
   });
 });

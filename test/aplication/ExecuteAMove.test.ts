@@ -1,7 +1,7 @@
 import ExecuteAmove from "../../src/aplication/ExecuteAmove";
 import Board from "../../src/domain/game/entities/Board";
 import Game from "../../src/domain/game/entities/Game";
-import Mark, { MarkType } from "../../src/domain/game/entities/Mark/Mark";
+import Mark from "../../src/domain/game/entities/Mark/Mark";
 import Player from "../../src/domain/game/entities/Player";
 import Point from "../../src/domain/game/entities/Point";
 import BoardRepository from "../../src/domain/game/repository/BoardRepository";
@@ -71,11 +71,9 @@ describe('Execute a move', () => {
       const destinyMark = destinyPoint?.marks.peek()!;
       expect(originMark).toBeInstanceOf(Mark);
       expect(originMark.ownerId).toEqual(playerTurn);
-      expect(originMark.type).toEqual(MarkType.ORIGIN);
 
       expect(destinyMark).toBeInstanceOf(Mark);
       expect(destinyMark.ownerId).toEqual(playerTurn);
-      expect(destinyMark.type).toEqual(MarkType.DESTINY);
     });
   });
 

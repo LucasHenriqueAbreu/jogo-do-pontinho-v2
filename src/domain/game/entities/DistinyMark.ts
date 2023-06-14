@@ -1,4 +1,4 @@
-import Position from "../Position";
+import Position from "./Position";
 import Mark from "./Mark";
 
 export default class DistinyMark extends Mark {
