@@ -2,8 +2,6 @@
  * Copy by this papper https://dev.to/glebirovich/typescript-data-structures-stack-and-queue-hld
  */
 
-import Mark from "../game/entities/Mark/Mark";
-
 interface IStack<T> {
   push(item: T): void;
   pop(): T | undefined;

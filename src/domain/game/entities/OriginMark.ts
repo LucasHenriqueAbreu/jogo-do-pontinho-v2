@@ -1,5 +1,6 @@
-import Position from "../Position";
+
 import Mark from "./Mark";
+import Position from "./Position";
 
 export default class OriginMark extends Mark {
   private _distiny: Position;

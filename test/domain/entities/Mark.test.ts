@@ -1,5 +1,5 @@
 import DistinyMark from "../../../src/domain/game/entities/DistinyMark";
-import OriginMark from "../../../src/domain/game/entities/Mark/OriginMark";
+import OriginMark from "../../../src/domain/game/entities/OriginMark";
 import Position from "../../../src/domain/game/entities/Position";
 
 

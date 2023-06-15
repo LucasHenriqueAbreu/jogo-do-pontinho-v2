@@ -1,6 +1,5 @@
 import DistinyMark from "./DistinyMark";
-import Mark from "./Mark/Mark";
-import OriginMark from "./Mark/OriginMark";
+import OriginMark from "./OriginMark";
 import Point from "./Point";
 import Position from "./Position";
 

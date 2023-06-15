@@ -1,11 +1,11 @@
 import Board from "./Board";
 import GetAroundPositions from "./GetAroundPositions";
 import DistinyMark from "./DistinyMark";
-import Mark from "./Mark/Mark";
-import OriginMark from "./Mark/OriginMark";
 import Point from "./Point";
 import Position from "./Position";
 import Score from "./Score";
+import Mark from "./Mark";
+import OriginMark from "./OriginMark";
 
 export type HasNewScoreInput = {
   destinyPosition: Position,

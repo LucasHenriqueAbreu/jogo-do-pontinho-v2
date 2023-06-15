@@ -1,5 +1,5 @@
 import StackCollection from "../../util/StackCollection";
-import Mark from "./Mark/Mark";
+import Mark from "./Mark";
 
 class Point {
   private _marks: StackCollection<Mark>;
