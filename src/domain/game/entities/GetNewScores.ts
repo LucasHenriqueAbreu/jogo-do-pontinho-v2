@@ -18,7 +18,6 @@ export type HasNewScoreInput = {
 class GetNewScores {
   static execute(params: HasNewScoreInput): Score[] {
     const { destinyPosition, originPosition, board, ownerId } = params;
-    board.toString();
     const scores: Score[] = [];
     const originAroundPositions = GetAroundPositions.execute({ board: board, position: originPosition });
     const distinyAroundPositions = GetAroundPositions.execute({ board: board, position: destinyPosition });

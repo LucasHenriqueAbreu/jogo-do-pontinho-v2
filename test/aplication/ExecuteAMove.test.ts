@@ -1,4 +1,4 @@
-import ExecuteAmove from "../../src/aplication/ExecuteAmove";
+import ExecuteAmove from "../../src/aplication/ExecuteAMove";
 import Board from "../../src/domain/game/entities/Board";
 import Game from "../../src/domain/game/entities/Game";
 import Mark from "../../src/domain/game/entities/Mark";
